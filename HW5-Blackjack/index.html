@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<!--
+/***************************
+4108056020 談維傑 第五次作業11/25
+4108056020 TAN WEI CHIEH The Fifth Homework 11/25
+***************************/
+-->
+<html>
+<head>
+<meta charset = "utf-8">
+<title>Blackjack</title>
+<style>
+
+@-webkit-keyframes blink {
+	0% {
+		opacity:1;
+	}
+	50% {
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
+}
+/* Firefox old*/
+@-moz-keyframes blink {
+	0% {
+		opacity:1;
+	}
+	50% {
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
+}
+/* IE */
+@-ms-keyframes blink {
+	0% {
+		opacity:1;
+	}
+	50% {
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
+}
+/* Opera and prob css3 final iteration */
+@keyframes blink {
+	0% {
+		opacity:1;
+	}
+	50% {
+		opacity:0;
+	}
+	100% {
+		opacity:1;
+	}
+}
+.blink-image {
+	/* Firefox */
+	-moz-animation: blink normal 2s infinite ease-in-out;
+	/* Webkit */
+	-webkit-animation: blink normal 2s infinite ease-in-out;
+	/* IE */
+	-ms-animation: blink normal 2s infinite ease-in-out;
+	/* Opera and prob css3 final iteration */
+	animation: blink normal 2s infinite ease-in-out;
+}
+.blink-image:hover{
+	animation: transform-origin;
+}
+body{
+	font-family: 'Open Sans', '微軟正黑體', sans-serif;
+	background-color: darkslategray;
+	color:white;
+}
+h1{
+	text-align: center;
+	font-size:xx-large;
+	color:goldenrod;
+}
+h2{
+	font-size:x-large;
+}
+
+</style>
+<script>
+
+var e, hitBack, table, moneyH1, ctrlDIV;
+var dealerH2, playerH2, dealerHand, playerHand;
+var dealerDeck, playerDeck, deck;
+var dealerStand = false, playerStand = true;
+var chips, signaled = 0, round = 0;
+function record(msg){
+	table.insertRow(-1).insertCell(0).appendChild(document.createTextNode(msg));
+	document.body.appendChild(table);
+}
+function imgCardNode(card){
+	let e = document.createElement("img");
+	e.setAttribute("src", "Cards/"+card+".png");
+	e.setAttribute("width", "110");
+	e.setAttribute("height", "176");
+	e.setAttribute("alt", card);
+	return e;
+}
+function pointCheck(deck){
+	var pt = 0;
+	for(let i = 0; i < deck.length; i++){
+		switch(deck[i][0]){
+			case '2': pt += 2; break;
+			case '3': pt += 3; break;
+			case '4': pt += 4; break;
+			case '5': pt += 5; break;
+			case '6': pt += 6; break;
+			case '7': pt += 7; break;
+			case '8': pt += 8; break;
+			case '9': pt += 9; break;
+			case '1': case 'J': case 'Q': case 'K':
+				pt += 10; break;
+			case 'A':
+				if(pt<=10) pt+=11;
+				else pt+=1;
+		}
+		if(pt>21) return pt;
+	}
+	return pt;
+}
+function dealerPointCheck(deck){
+	var pt = 0;
+	for(let i = 1; i < deck.length; i++){
+		switch(deck[i][0]){
+			case '2': pt += 2; break;
+			case '3': pt += 3; break;
+			case '4': pt += 4; break;
+			case '5': pt += 5; break;
+			case '6': pt += 6; break;
+			case '7': pt += 7; break;
+			case '8': pt += 8; break;
+			case '9': pt += 9; break;
+			case '1': case 'J': case 'Q': case 'K':
+				pt += 10; break;
+			case 'A':
+				if(pt<=10) pt+=11;
+				else pt+=1;
+		}
+		if(pt>21) return pt;
+	}
+	return pt;
+}
+function hit(){
+	playerDeck[playerDeck.length] = deck.pop();
+	playerHand.replaceChild(imgCardNode(playerDeck[playerDeck.length-1]), hitBack);
+	let ppt = pointCheck(playerDeck);
+	let dpt = pointCheck(dealerDeck);
+	if(playerDeck.length == 5) ;
+	if(ppt < 21){
+		playerH2.innerHTML = "You: " + ppt;
+		playerHand.appendChild(hitBack);
+	}
+	else if(ppt > 21){
+		dealerHand.replaceChild(imgCardNode(dealerDeck[0]), dealerHand.firstElementChild);
+		if(dpt==21) dealerH2.innerHTML = "Dealer: Blackjack";
+		else dealerH2.innerHTML = "Dealer: " + dpt;
+		playerH2.innerHTML = "You LOSE: " + ppt;
+		playerH2.style.color = "red";
+		record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+		askIfNext();
+		return;
+	}
+	else if(ppt != dpt){
+		dealerHand.replaceChild(imgCardNode(dealerDeck[0]), dealerHand.firstElementChild);
+		dealerH2.innerHTML = "Dealer: " + dpt;
+		playerH2.innerHTML = "You WIN: Blackjack";
+		playerH2.style.color = "goldenrod";
+		chips += Math.floor(signaled*2);
+		record("Won chips: " + Math.floor(signaled*2) + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.")
+		askIfNext();
+		return;
+	}
+	if(dealerStand) dealerStand = true;
+	else if(dpt < 17){
+		dealerDeck[dealerDeck.length] = deck.pop();
+		dpt = pointCheck(dealerDeck);
+		dealerHand.appendChild(imgCardNode(dealerDeck[dealerDeck.length-1]));
+		if(dpt > 21){
+			playerHand.removeChild(hitBack);
+			dealerHand.replaceChild(imgCardNode(dealerDeck[0]), dealerHand.firstElementChild);
+			dealerH2.innerHTML = "Dealer: " + dpt + " -- You WIN";
+			dealerH2.style.color = "goldenrod";
+			chips += signaled*2;
+			record("Won chips: " + signaled*2 + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.")
+			askIfNext();
+			return;
+		}
+	}
+	else if(dpt < 21){
+		dealerDeck[dealerDeck.length] = deck.pop();
+		dpt = pointCheck(dealerDeck);
+		if(dpt > 21){
+			dealerStand = true;
+			dealerH2.innerHTML = "Dealer STAND";
+			deck[deck.length] = dealerDeck.pop();
+			dpt = pointCheck(dealerDeck);
+		}
+		else dealerHand.appendChild(imgCardNode(dealerDeck[dealerDeck.length-1]));
+	}
+	else{
+		dealerHand.replaceChild(imgCardNode(dealerDeck[0]), dealerHand.firstElementChild);
+		playerHand.removeChild(hitBack);
+		if(ppt == dpt){
+			dealerH2.innerHTML = "Dealer: " + dpt;
+			if(dpt == 21) dealerH2.innerHTML = "Dealer : Blackjack";
+			dealerH2.style.color = "white";
+			playerH2.innerHTML = "You : " + ppt;
+			if(ppt == 21) playerH2.innerHTML = "You : Blackjack";
+			playerH2.innerHTML += " -- DRAW"
+			playerH2.style.color = "white";
+			chips += signaled;
+			record("Get back chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+			askIfNext();
+			return;
+		}
+		else{
+			dealerH2.innerHTML = "Dealer: Blackjack -- You LOSE";
+			dealerH2.style.color = "red";
+			record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+			askIfNext();
+			return;
+		}
+	}
+}
+function stand(){
+	playerHand.removeChild(hitBack);
+	dealerHand.replaceChild(imgCardNode(dealerDeck[0]), dealerHand.firstElementChild);
+	let dpt = pointCheck(dealerDeck);
+	let ppt = pointCheck(playerDeck);
+	record("Stand when point: " + ppt +
+		", dealer looks point: " + dealerPointCheck(dealerDeck));
+	if(dpt > ppt){
+		dealerH2.innerHTML = "Dealer: " + dpt + " -- You LOSE";
+		dealerH2.style.color = "red";
+		record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+		askIfNext();
+	}
+	else if(dpt == 21 && ppt != 21){
+		dealerH2.innerHTML = "Dealer: Blackjack -- You LOSE";
+		dealerH2.style.color = "red";
+		record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+		askIfNext();
+	}
+	while(dpt < 17){
+		dealerDeck[dealerDeck.length] = deck.pop();
+		dealerHand.appendChild(imgCardNode(dealerDeck[dealerDeck.length-1]));
+		dpt = pointCheck(dealerDeck);
+		if(dpt > 21){
+			dealerH2.innerHTML = "Dealer: " + dpt + " -- You WIN";
+			dealerH2.style.color = "goldenrod";
+			chips += signaled*2;
+			record("Won chips: " + signaled*2 + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.")
+			askIfNext();
+			return;
+		}
+		else if(dpt == 21){
+			dealerH2.innerHTML = "Dealer: Blackjack -- You LOSE";
+			dealerH2.style.color = "red";
+			record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+			askIfNext();
+			return;
+		}
+		else if(dpt > ppt){
+			dealerH2.innerHTML = "Dealer: " + dpt + " -- You LOSE";
+			dealerH2.style.color = "red";
+			record("Lost chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+			askIfNext();
+			return;
+		}
+		else if(ppt > dpt){
+			dealerH2.innerHTML = "Dealer: " + dpt + " -- You WIN";
+			dealerH2.style.color = "goldenrod";
+			chips += signaled*2;
+			record("Won chips: " + signaled*2 + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.")
+			askIfNext();
+			return;
+		}
+	}
+	if(ppt == dpt){
+		dealerH2.innerHTML = "Dealer: " + dpt;
+		if(dpt == 21) dealerH2.innerHTML = "Dealer : Blackjack";
+		dealerH2.style.color = "white";
+		playerH2.innerHTML = "You : " + ppt;
+		if(ppt == 21) playerH2.innerHTML = "You : Blackjack";
+		playerH2.innerHTML += " -- DRAW"
+		playerH2.style.color = "white";
+		chips += signaled;
+		record("Draw, Get back chips: " + signaled + ", chips: " + chips + ". Finally, you have" + ppt + " point , dealer have " + dpt + "point.");
+		askIfNext();
+		return;
+	}
+}
+function askIfNext(){
+	signaled = 0;
+	moneyH1.innerHTML = "Your Chips: " + chips + " | Signaled: " + signaled;
+	document.body.removeChild(ctrlDIV);
+	document.body.removeChild(table);
+	document.body.removeChild(document.body.lastElementChild);
+
+	e = document.createElement("button");
+	e.innerHTML = "Next Round?";
+	e.addEventListener("click", roundStart, false);
+	document.body.appendChild(e);
+
+	document.body.appendChild(document.createElement("br"));
+	document.body.appendChild(table);
+}
+function roundStart(){
+	deck = [];
+	let suit = ["C","D","H","S"];
+	for(let i = 2; i <= 10; i++)
+		for(let j = 0; j < suit.length; j++)
+			deck[deck.length] = "" + i + suit[j];
+	for(let i = 0; i < suit.length; i++){
+		deck[deck.length] = "J" + suit[i];
+		deck[deck.length] = "Q" + suit[i];
+		deck[deck.length] = "K" + suit[i];
+		deck[deck.length] = "A" + suit[i];
+	}
+	for(let i = deck.length - 1; i > 0; i--) {
+		let j = Math.floor(Math.random() * (i + 1));
+		let t = deck[i];
+		deck[i] = deck[j];
+		deck[j] = t;
+	}
+	playerDeck = [deck.pop()];
+	dealerDeck = [deck.pop()];
+	playerDeck[1] = deck.pop();
+	dealerDeck[1] = deck.pop();
+	while(document.body.lastElementChild)
+		document.body.removeChild(document.body.lastElementChild);
+	e = document.createElement("h1");
+	e.innerHTML = "Blackjack - round " + ++round;
+	document.body.appendChild(e);
+	dealerH2 = document.createElement("h2");
+	dealerH2.style.textAlign = "center";
+	dealerH2.innerHTML = "Dealer";
+	document.body.appendChild(dealerH2);
+	dealerHand = document.createElement("div");
+	dealerHand.style.textAlign = "center";
+	document.body.appendChild(dealerHand);
+	document.body.appendChild(document.createElement("br"));
+	playerH2 = document.createElement("h2");
+	playerH2.style.textAlign = "center";
+	playerH2.innerHTML = "You";
+	document.body.appendChild(playerH2);
+	playerHand = document.createElement("div");
+	playerHand.style.textAlign = "center";
+	document.body.appendChild(playerHand);
+	dealerHand.appendChild(imgCardNode("BackCard"));
+	dealerHand.appendChild(imgCardNode(dealerDeck[1]));
+	pointCheck(dealerDeck);
+	hitBack = imgCardNode("BackCard");
+	hitBack.setAttribute("class", "blink-image");
+	hitBack.addEventListener("click", hit, false);
+	playerHand.appendChild(imgCardNode(playerDeck[0]));
+	playerHand.appendChild(imgCardNode(playerDeck[1]));
+	var ppt = pointCheck(playerDeck);
+	playerH2.innerHTML = "You: " + ppt;
+	if(ppt == 21) playerH2.innerHTML = "You : Blackjack";
+	playerHand.appendChild(hitBack);
+	moneyH1 = document.createElement("h2");
+	moneyH1.innerHTML = "Your Chips: " + chips + " | Signaled: " + signaled;
+	moneyH1.style.color = "goldenrod";
+	moneyH1.style.textAlign = "center";
+	document.body.appendChild(moneyH1);
+	document.body.appendChild(ctrlDIV);
+	document.body.appendChild(document.createElement("br"));
+	record("Round " + round + ", chips: " + chips + ", your point: " + ppt +
+		", dealer looks point: " + dealerPointCheck(dealerDeck));
+	if(chips<30){
+		while(document.body.lastElementChild)
+			document.body.removeChild(document.body.lastElementChild);
+		e = document.createElement("h1");
+		e.innerHTML = "Blackjack - round " + round;
+		document.body.appendChild(e);
+		e = document.createElement("h1");
+		e.innerHTML = "GAME OVER";
+		document.body.appendChild(e);
+		e = document.createElement("div");
+		e.textAlign = "center";
+		e.appendChild(table);
+		document.body.appendChild(e);
+	}
+}
+function setup(){
+	while(document.body.lastElementChild)
+		document.body.removeChild(document.body.lastElementChild);
+	table = document.createElement("table");
+	table.style.textAlign = "center";
+	table.createTHead();
+	table.tHead.innerHTML = "<tr><th>Record Board</th></tr>"
+	table.createTBody();
+	table.createTFoot();
+	e = document.createElement("h1");
+	e.innerHTML = "Welcome to Blackjack";
+	document.body.appendChild(e);
+	e = document.createElement("h2");
+	e.style.textAlign = "center";
+	e.innerHTML = "Assign chips:";
+	document.body.appendChild(e);
+	let div = document.createElement("div");
+	div.style.textAlign = "center";
+	e = document.createElement("button");
+	e.innerHTML = "300";
+	e.addEventListener("click", function (){
+		chips = 300; roundStart();
+	}, false);
+	div.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "500";
+	e.addEventListener("click", function (){
+		chips = 500; roundStart();
+	}, false);
+	div.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "1000";
+	e.addEventListener("click", function (){
+		chips = 1000; roundStart();
+	}, false);
+	div.appendChild(e);
+	document.body.appendChild(div);
+
+	ctrlDIV = document.createElement("div");
+	ctrlDIV.style.textAlign = "center";
+	e = document.createElement("label");
+	e.innerHTML = "Signal: ";
+	ctrlDIV.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "30";
+	e.addEventListener("click", function (){
+		if(chips<30) return;
+		signaled += 30; chips -= 30; record("Signal " + 30 + ", chips: " + chips);
+		moneyH1.innerHTML = "Your Chips: " + chips + " | Signaled: " + signaled;
+	}, false);
+	ctrlDIV.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "50";
+	e.addEventListener("click", function (){
+		if(chips<50) return;
+		signaled += 50; chips -= 50; record("Signal " + 50 + ", chips: " + chips);
+		moneyH1.innerHTML = "Your Chips: " + chips + " | Signaled: " + signaled;
+	}, false);
+	ctrlDIV.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "100";
+	e.addEventListener("click", function (){
+		if(chips<100) return;
+		signaled += 100; chips -= 100; record("Signal " + 100 + ", chips: " + chips);
+		moneyH1.innerHTML = "Your Chips: " + chips + " | Signaled: " + signaled;
+	}, false);
+	ctrlDIV.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "Stand";
+	e.addEventListener("click", stand, false);
+	ctrlDIV.appendChild(e);
+}
+window.addEventListener("load", setup, false);
+
+</script>
+</head><body></body></html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--
+/***************************
+4108056020 談維傑 第三次作業11/4
+4108056020 Tan Wei-Chieh Homework 11/4
+***************************/
+-->
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<meta name="author" content="twjmy@msn.com">
+		<title>HW3 - 4108056020</title>
+		<script>
+			var
+				x, form, table, a,
+				med, prime, armst, fibon;
+
+			function start(){
+				x = document.createElement("H1");
+				x.innerHTML = "8 integers";
+				document.body.appendChild(x);
+
+				x = document.createElement("FORM");
+				x.setAttribute("id", "form_tag");
+				document.body.appendChild(x);
+
+				form = document.getElementById("form_tag");
+				for(var i = 1; 8 >= i; ++i){
+					x = document.createElement("INPUT");
+					x.setAttribute("id", "v"+i);
+					x.setAttribute("type", "text");
+					x.setAttribute("size", "7");
+					x.setAttribute("placeholder", "Value "+i);
+					form.appendChild(x);
+					form.innerHTML += " ";
+					if( i%4 == 0 ) form.innerHTML += "<br>";
+				}
+
+				x = document.createElement("INPUT");
+				x.setAttribute("type", "reset");
+				x.setAttribute("value", "Clear");
+				x.addEventListener("click", clear, false);
+				form.appendChild(x);
+
+				x = document.createElement("INPUT");
+				x.setAttribute("type", "button");
+				x.setAttribute("value", "Random");
+				x.addEventListener("click", random, false);
+				form.appendChild(x);
+
+				x = document.createElement("INPUT");
+				x.setAttribute("type", "button");
+				x.setAttribute("value", "Calculate");
+				x.addEventListener("click", calculate, false);
+				form.appendChild(x);
+
+				a = document.createElement("A");
+				a.setAttribute("hidden", "true");
+				document.head.appendChild(a);
+
+				x = document.createElement("DIV");
+				x.setAttribute("style", "width: 100%; max-width: 500px; margin: 0px auto;")
+				document.body.appendChild(x);
+
+				table = document.getElementById("table_tag");
+				x.appendChild(table);
+			}
+
+			function clear(){
+				for(var i = 1; 8 >= i; ++i)
+					document.getElementById("v"+i).value = "";
+				table.removeAttribute("border");
+				a.innerHTML = "";
+				table.innerHTML = "";
+			}
+
+			function random(){
+				for(var i = 1; 8 >= i; ++i){
+					x = document.createElement("div");
+					x.setAttribute("id","a"+i);
+					x.setAttribute("hidden", "true");
+					x.addEventListener("click", calculate, false);
+					a.appendChild(x);
+				}
+				for(var r, i = 1; 8 >= i; ++i){
+					r = Math.floor(1+Math.random()*1000);
+					document.getElementById("v"+i).value = r;
+					document.getElementById("a"+i).innerHTML = r;
+				}
+				calculate();
+			}
+
+			function calculate(){
+				var v;
+				for(var i = 1; 8 >= i; ++i){
+					v = document.getElementById("v"+i).value;
+					x = parseInt(v);
+					if(v === "" || isNaN(v) || x > 1000){
+						table.removeAttribute("border");
+						table.innerHTML = "<div style=\"color:red;\">Invalid input<div>";
+						return;
+					}
+					document.getElementById("a"+i).innerHTML = x;
+				}
+				if(a.innerHTML === "") for(var i = 1; 8 >= i; ++i){
+					x = document.createElement("div");
+					x.setAttribute("id","a"+i);
+					x.setAttribute("hidden", "true");
+					x.addEventListener("click", calculate, false);
+					a.appendChild(x);
+				}
+				prime = "";
+				armst = "";
+				fibon = "";
+				for(var i = 1; 8 >= i; ++i){
+					v = parseInt(document.getElementById("v"+i).value);
+					if(isPrime(v)) prime += v+" "
+					if(isArmst(v)) armst += v+" ";
+					if(isFibon(v)) fibon += v+" ";
+				}
+				sortHidden();
+				buildTable();
+				a.innerHTML = "";
+			}
+			
+			function sortHidden(){
+				var m, n;
+				for(var i = 1; 8 >= i; ++i){
+					for(var j = 1; 8-i >= j; ++j){
+						m = document.getElementById("a"+j).innerHTML;
+						n = document.getElementById("a"+(j+1)).innerHTML;
+						if (m > n){
+							document.getElementById("a"+j).innerHTML = n;
+							document.getElementById("a"+(j+1)).innerHTML = m;
+						}
+					}
+				}
+				m = parseInt(document.getElementById("a"+4).innerHTML);
+				n = parseInt(document.getElementById("a"+5).innerHTML);
+				if(m != n) med = (m+n)/2;
+				else med = m;
+			}
+
+			function isPrime(n){
+				for(var i = 2, s = Math.sqrt(n); i <= s; i++)
+					if(n % i === 0) return false; 
+				return n > 1;
+			}
+
+			function isArmst(n){
+				if(n < 0) return false;
+				else if(n < 10) return true;
+				else switch(n){
+					case 153: case 370: case 371: case 407:
+						return true;
+					default: return false;
+				}
+			}
+
+			function isFibon(n){
+				if(n < 0) return false;
+				else if(n < 4) return true;
+				else switch(n){
+					case 5: case 8: case 13: case 21:
+					case 34: case 55: case 89: case 144:
+					case 233: case 377: case 610: case 987:
+						return true;
+					default: return false;
+				}
+			}
+
+			function buildTable(){
+				table.setAttribute("border", "1");
+				table.innerHTML = "";
+				var tr, th, td;
+				table.appendChild(document.createElement("THEAD"));
+				x = document.createElement("TBODY");
+
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Maximum";
+				th.setAttribute("width", "200px");
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = document.getElementById("a"+8).innerHTML;
+				tr.appendChild(td);
+				x.appendChild(tr)
+
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Minimum";
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = document.getElementById("a"+1).innerHTML;
+				tr.appendChild(td);
+				x.appendChild(tr)
+
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Median";
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = med;
+				tr.appendChild(td);
+				x.appendChild(tr)
+
+				
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Prime numbers";
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = prime;
+				tr.appendChild(td);
+				x.appendChild(tr)
+				
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Armstrong numbers";
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = armst;
+				tr.appendChild(td);
+				x.appendChild(tr)
+				
+				tr = document.createElement("TR");
+				th = document.createElement("TH");
+				th.innerHTML = "Fibonacci sequences";
+				tr.appendChild(th);
+				td = document.createElement("TD");
+				td.innerHTML = fibon;
+				tr.appendChild(td);
+				x.appendChild(tr)
+
+				table.appendChild(x);
+				table.appendChild(document.createElement("TFOOT"));
+			}
+			
+			window.addEventListener("load", start, false);
+		</script>
+		<style>
+			body{
+				text-align: center;
+				font-family: 'Open Sans', '微軟正黑體', sans-serif;
+				background-color: darkslategray;
+				color:white;
+			}
+			h1{
+				font-size:xx-large;
+				color:goldenrod;
+			}
+			input{
+				text-align: center;
+				font-family: 'Open Sans', '微軟正黑體', sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<table id="table_tag" style = "width: 100%;"></table>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        /***************************
+        4108056020 談維傑 第一次作業 9/30
+        4108056020 Tan Wei-Chieh The First Homework 9/30
+        ***************************/
+        <meta charset = "utf-8">
+        <title>註冊帳號 - 國立中興大學</title>
+    </head>
+    <body>
+        <h1><a href = "index.html"><img src = "logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/></a>國立中興大學 - 註冊帳號</h1>
+        <hr>
+        <p><a href = "en/signup.html">English</a></p>
+        <h3>註冊帳號</h3>
+        <form action = "signin.html" method="POST" automcomplete = "on" >
+            <label for="name">*姓名:</label>
+            <input type="text" name="name" required autofocus><br><br>
+            <label for="depart">*科系:</label>
+            <input type="text" name="depart" id="depart" placeholder="請選擇科系" list="departs">
+            <datalist id="departs">
+                <option value="資訊工程學系">
+                <option value="資訊管理學系">
+                <option value="電機資訊學士班">
+                <option value="電機工程學系">
+            </datalist><br><br>
+            <label for="tel">*電話:</label>
+            <input type="tel" name="tel" id="tel" placeholder="0987654321" required><br><br>
+            <label for="email">*電郵:</label>
+            <input type="email" name="email" id="email" placeholder="example@example.com" required><br><br>
+            <label for="date">*出生日期:</label>
+            <input type="date" name="date" id="date" required><br><br>
+            <label for="month">*入學季度:</label>
+            <input type="month" name="month" id="month" required>
+            <input type="week" name="week" id="week" required><br><br>
+            <label for="datetime-local">生辰:</label>
+            <input type="datetime-local" name="datetime-local" id="datetime-local"><br><br>
+            <label for="datetime">伴侶生日:</label>
+            <input type="datetime" name="datetime" id="datetime" placeholder="MM-DD"><br><br>
+            <label for="time">通常睡醒時刻:</label>
+            <input type="time" name="time" id="time" placeholder="HH:MM"><br><br>
+            <label for="description">自我介紹:</label><br>
+            <textarea type="textarea" name="description" id="description" rows="4" cols="50"></textarea><br><br>
+            <label for="url">個人網站:</label>
+            <input type="url" name="url" id="url" placeholder="http://example.com"><br><br>
+            <label for="number">最愛數字:</label>
+            <input type="number" name="number" id="number" value="0" min="0" max="100" step="1" placeholder="0~100"><br><br>
+            <label for="color">最愛顏色:</label>
+            <input type="color" name="color" id="color"><br><br>
+            <label for="range">電郵通知傾向: 無</label>
+            <input type="range" name="range" id="range">
+            <label for="range">頻繁</label><br><br>*必填
+            <input type="reset" value="清除">
+            <input type="submit" value="註冊">
+        </form>
+        <p><a href = "index.html">回主畫面</a></p>
+    </body>
+</html>

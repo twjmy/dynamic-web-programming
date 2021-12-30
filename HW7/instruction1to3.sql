@@ -1,0 +1,137 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+CREATE DATABASE IF NOT EXISTS healthdb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE healthdb;
+
+CREATE TABLE personal_health_table (
+  student_ID text NOT NULL,
+  gender enum('male','female') NOT NULL,
+  birthdate date NOT NULL,
+  height float NOT NULL,
+  weight float NOT NULL,
+  vision_of_left_eye float NOT NULL,
+  vision_of_right_eye float NOT NULL,
+  waistline float NOT NULL,
+  scoliosis tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `personal_health_table`(
+    `student_ID`,
+    `gender`,
+    `birthdate`,
+    `height`,
+    `weight`,
+    `vision_of_left_eye`, 
+    `vision_of_right_eye`, 
+    `waistline`, 
+    `scoliosis`
+) VALUES (
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+),(
+    FLOOR(RAND()*999)+109000,
+    FLOOR(RAND()*2)+1,
+    CONCAT(FLOOR(RAND()*(2001-1995+1)+1995),'-',FLOOR(RAND()*(12-1+1)+1),'-',FLOOR(RAND()*(28-1+1)+1)),
+    FLOOR(RAND()*(200-140+1)+140)*0.01,
+    FLOOR(RAND()*(80-40+1)+40),
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*20+1)*0.1,
+    FLOOR(RAND()*(1000-500+1)+500)*0.1,
+    FLOOR(RAND()*2)
+);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

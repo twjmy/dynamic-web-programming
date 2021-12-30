@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+        /***************************
+        4108056020 談維傑 第二次作業10/28
+        4108056020 Tan Wei-Chieh The Second Homework 10/28
+        ***************************/
+        -->
+        <meta charset = "utf-8">
+        <title>登入 - 國立中興大學</title>
+        <style>
+            body{
+                font-family: 'Open Sans', '微軟正黑體', sans-serif;
+                background-color: darkslategray;
+                color:white;
+            }
+            h1{
+                font-size:xx-large;
+                color:goldenrod;
+            }
+            h2{
+                font-size:x-large;
+            }
+            a, a:link, a:visited, a:active{
+                color:rgb(173,255,47);
+                text-decoration: none;
+            }
+            a:hover{
+                color:#19953b;
+                transition: color 300ms;
+            }
+        </style>
+    </head>
+    <body>
+        <p style= "text-align: right;" ><a href = "en/signin.html">English</a></p>
+        <h1><a href = "index.html"><img src = "logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/></a>國立中興大學 - 登入</h1>
+        <hr>
+        <form action = "index.html" method="POST" automcomplete = "off">
+            <label for="name">帳號:</label>
+            <input required autofocus type="text" maxlength="10" pattern="\d{1,10}" id="uid" name="uid" placeholder="輸入10位數字帳號..."><br><br>
+            <label for="name">密碼:</label>
+            <input required type="password" size='20' id="psw" name="psw" placeholder="輸入密碼..."><br><br>
+            <input type="radio" id="student" name="identity" value="student" checked="checked">
+            <label for="male">學生</label>
+            <input type="radio" id="stuff" name="identity" value="stuff">
+            <label for="female">教職員</label><br>
+            <input type="checkbox" id="keep" name="keep" value="keep">
+            <label for="keep">保持登入</label>
+            <input type="hidden" name="language" value="ch">
+            <input type="submit" value="登入">  <a href="signup.html">註冊</a>
+        </form>
+        <aside><a href = "index.html">回主畫面</a></aside>
+    </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="utf8">
+		<title>動態網頁程式設計期中考試作業_4108056020_談維傑</title>
+		<script>
+			var button, e, N, X1, b1, X2, b2;
+			function submit(){
+				if(document.getElementById("N").value){
+					N = document.getElementById("N").value;
+					//document.body.innerHTML += "<div> input = " + N + "</div>";
+					X1 = parseInt(N, 10);
+					//document.body.innerHTML += "<div> X1 = " + X1 + " (decimal)</div>";
+					X1 = parseInt(X1.toString(2), 10);
+					//document.body.innerHTML += "<div> X1 = " + X1 + " (binary)</div>";
+					b1 = 0;
+					e=parseInt(N, 10).toString(2)
+					while(e){
+						if(e.substring(e.length-1,e.length)==1)
+							b1 = b1 + 1;
+						e = e.substring(0,e.length-1);
+					}
+					//document.body.innerHTML += "<div> b1 = " + b1 + "</div>";
+					X2 = parseInt(N, 16);
+					//document.body.innerHTML += "<div> X2 = " + X2 + " (hexadecimal)</div>";
+					X2 = parseInt(X2.toString(2), 10);
+					//document.body.innerHTML += "<div> X2 = " + X2 + " (binary)</div>";
+					b2 = 0;
+					e=parseInt(N, 16).toString(2)
+					while(e){
+						if(e.substring(e.length-1,e.length)==1)
+							b2 = b2 + 1;
+						e = e.substring(0,e.length-1);
+					}
+					//document.body.innerHTML += "<div> b2 = " + b2 + "</div>";
+					e = document.getElementById("Output");
+					e.innerHTML = "Decipher: "
+					if(b1 > b2) e.innerHTML += "Time isn’t the problem, it’s getting out alive that’s the problem";
+					if(b1 < b2) e.innerHTML += "I told you, you have to start looking differently at the world";
+					if(b1==b2) e.innerHTML += "What’s happened has happened";
+				}
+				setup();
+			}
+			function setup(){
+				button = document.getElementById("SubBut");
+				button.addEventListener("click", submit, false);
+			}
+			window.addEventListener("load", setup, false);
+		</script>
+	</head>
+	<body>
+		<form>
+			Password: 
+			<input id="N" type="number" placeholder="Please enter N...">
+			<input id="SubBut" type="button" value="submit">
+		</form>
+		<div id="Output"></div>
+	</body>
+</html>

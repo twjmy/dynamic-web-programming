@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        /***************************
+        4108056020 談維傑 第一次作業 9/30
+        4108056020 Tan Wei-Chieh The First Homework 9/30
+        ***************************/
+        <meta charset = "utf-8">
+        <title>Sign Up - National Chung Hsing University</title>
+    </head>
+    <body>
+        <h1><a href = "index.html"><img src = "../logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/></a>National Chung Hsing University - Sign Up</h1>
+        <hr>
+        <p><a href = "../signup.html">中文</a></p>
+        <h3>Sign Up for account</h3>
+        <form action = "signin.html" method="POST">
+            <label for="name">*Full name:</label>
+            <input type="text" name="name" required autofocus><br><br>
+            <label for="depart">*Department:</label>
+            <input type="text" name="depart" id="depart" placeholder="Please select a depart" list="departs">
+            <datalist id="departs">
+                <option value="CSE">
+                <option value="CSEE">
+                <option value="EE">
+                <option value="IM">
+            </datalist><br><br>
+            <label for="tel">*Phone number:</label>
+            <input type="tel" name="tel" id="tel" placeholder="0987654321" required><br><br>
+            <label for="email">*Email:</label>
+            <input type="email" name="email" id="email" placeholder="example@example.com" required><br><br>
+            <label for="date">*Birthday:</label>
+            <input type="date" name="date" id="date" required><br><br>
+            <label for="month">*Admission period:</label>
+            <input type="month" name="month" id="month" required>
+            <input type="week" name="week" id="week" required><br><br>
+            <label for="datetime-local">Birthday with specific time:</label>
+            <input type="datetime-local" name="datetime-local" id="datetime-local"><br><br>
+            <label for="datetime">Birthday of spouse:</label>
+            <input type="datetime" name="datetime" id="datetime" placeholder="MM-DD"><br><br>
+            <label for="time">Often wake up time:</label>
+            <input type="time" name="time" id="time" placeholder="HH:MM"><br><br>
+            <label for="description">Self-introduction:</label><br>
+            <textarea type="textarea" name="description" id="description" rows="4" cols="50"></textarea><br><br>
+            <label for="url">Website:</label>
+            <input type="url" name="url" id="url" placeholder="http://example.com"><br><br>
+            <label for="number">Favourite number:</label>
+            <input type="number" name="number" id="number" value="0" min="0" max="100" step="1" placeholder="0~100"><br><br>
+            <label for="color">Favourite color:</label>
+            <input type="color" name="color" id="color"><br><br>
+            <label for="range">Email notify frequence: None</label>
+            <input type="range" name="range" id="range">
+            <label for="range">Always</label><br><br>*Required
+            <input type="reset" value="Clear">
+            <input type="submit" value="Sign Up">
+        </form>
+        <p><a href = "index.html">Back to main menu</a></p>
+    </body>
+</html>

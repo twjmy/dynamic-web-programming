@@ -1,0 +1,24 @@
+{
+	"companies":{
+		"###":{
+			"record date":"",
+			"company name":"",
+			"initial assets":"",
+			"initial liabilities":"",
+			"assets":"+/-",
+			"liabilities":"+/-",
+			"revenue":"+/-",
+			"expenses":"+/-"
+		},"...":"..."
+	},
+	"records":{
+		"###":{
+			"record date":"",
+			"name":"",
+			"object":"product/employee/material(s)",
+			"type":"receivable/payable",
+			"price/salary":"",
+			"number":""
+		},"...":"..."
+	}
+}

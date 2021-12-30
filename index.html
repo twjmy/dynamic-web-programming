@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>考試機器人</title><meta charset = "utf-8"><meta name="author" content="VJ">
+<style>
+h1,h2,h3,h4,h5 { text-align: center; }
+#標題,#選單 { user-select: none; }
+#新增
+{	margin: auto; 
+	width: fit-content;
+	box-sizing: border-box; }
+#內文 { margin: 0 1em; }
+#內文 p
+{	margin: 1em auto;
+	text-indent : 2em;
+	max-width: 600px;
+	box-sizing: border-box; }
+#新增 * { padding: 1em; border:1px solid DodgerBlue; }
+*.醒目選單標題 { color: DodgerBlue; }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">/*JQuery*/</script>
+<script>
+$(document).ready(function(){
+	$("#新增").attr("required");
+	$("#新增").attr("form","新增表單");
+	$("#標題").click(function(){
+		$("#選單").toggle();
+	});
+	$("#前言標題").click(function(){
+		$(this).toggleClass("醒目選單標題");
+		$("#說明").toggle();
+		$("#新增").hide();
+		$("#新增標題").removeAttr("class");
+	});
+	$("#新增標題").click(function(){
+		$(this).toggleClass("醒目選單標題");
+		$("#新增").toggle();
+		$("#前言, #說明").hide();
+		$("#前言標題, #說明標題").removeAttr("class");
+	});
+	$("#新增表單").submit(function(event){
+		event.preventDefault();
+		$
+	});
+});
+</script>
+</head>
+<body>
+	<h1 id="標題">考試機器人</h1>
+	<div id="選單">
+		<h4><span id="說明標題">說明</span>　<span id="新增標題">新增</span></h4>
+		<div id="內文">
+			<div id="說明" style="display: none;">
+				<h2>前言</h2>　
+				在我們上到大學以來已知的學術領域中，往往有許多知識是需要被牢記的，
+				但像是在學科考試的時候，我們常常會忘記這些必要的知識。
+				記不住這些知識以後在應用上甚至是工作上都會是我們的損失。
+				利用這個「考試機器人」，可以幫助我們加深記憶我們所需要的知識。
+				<h2 id="#操作說明標題" class="醒目選單標題">操作說明</h2>　
+				<p id="操作說明" style="display: none;">
+					考試機器人用選擇題訓練記憶，使用者可以在新增考科、輸入考科題庫後，
+					按使用者自行設定好的數字隨機抽取題庫中的題目作答，題型目前只有選擇題，選項會隨機打亂。
+				</p>
+			</div>
+			<div id="新增" style="display: none;">
+				<form id="新增表單" action="">
+					<input type="text" name="subject" placeholder="輸入科目">
+					<textarea name="question" width="100%" placeholder="輸入題目"></textarea><br>
+					<input type="text" name="correct" placeholder="輸入正解">
+					<input type="text" name="incorrect0" placeholder="輸入錯誤答案1">
+					<input type="text" name="incorrect1" placeholder="輸入錯誤答案2">
+					<input type="text" name="incorrect2" placeholder="輸入錯誤答案3">
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

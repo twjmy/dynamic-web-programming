@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+        /***************************
+        4108056020 談維傑 第二次作業10/28
+        4108056020 Tan Wei-Chieh The Second Homework 10/28
+        ***************************/
+        -->
+        <meta charset = "utf-8" content="nchu">
+        <title>Main Menu - National Chung Hsing University</title>
+        <style>
+            body{
+                font-family: 'Open Sans', '微軟正黑體', sans-serif;
+                background-color: darkslategray;
+                color:white;
+            }
+            h1{
+                font-size:xx-large;
+                color:goldenrod;
+            }
+            h2{
+                font-size:x-large;
+            }
+            a, a:link, a:visited, a:active{
+                color:rgb(173,255,47);
+                text-decoration: none;
+            }
+            a:hover{
+                color:#19953b;
+                transition: color 300ms;
+            }
+            footer, footer nav, nav{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div style= "text-align: right;" >
+            <a href = "signin.html">Sign in</a>
+            <a href = "../index.html">中文</a>
+            <form style= "text-align: right;" action="index.html" method="GET">
+                <label for="search">Search:</label>
+                <input type="search" name="search" id="search">
+                <input type="submit" value="Search" formnovalidate>
+            </form>
+        </div>
+        <h1 style="color:goldenrod">
+            <img src = "../logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/>
+            National Chung Hsing University - Main Menu
+        </h1>
+        <hr>
+        <div style="width: 100%; max-width: 750px; margin: 0px auto;">
+            <h2 style="text-align: text;">Latest News</h2>
+            <table style="width: 100%;" border = "1">
+                <thead><th>Date</th><th>Title</th></thead>
+                <tbody>
+                    <tr><td>2020-09-25</td><td>Symbols of Inner Rhymes: Lee Yung-han at 84</td></tr>
+                    <tr><td>2017-12-19</td><td>[Forwarded]Prague Area Studies: Master's Degree Programmes in English</td></tr>
+                    <tr><td>2017-12-19</td><td>[News] NCHU Students Won the 4th Prize at 2017 Taiwan In My Eyes 120h event</td></tr>
+                    <tr><td>2017-12-04</td><td>NCHU 2017 Christmas and Chinese Winter Solstice</td></tr>
+                    <tr><td>2017-11-28</td><td>[News]NCHU OIA Academic Visit to Bhutan 24.11.2017</td></tr>
+                    <tr><td>2017-11-28</td><td>News- Winds of change: Muslim girls embrace education, aim high</td></tr>
+                    <tr><td>2017-11-28</td><td>International Student Study in NCHU Video</td></tr>
+                </tbody>
+                <tfoot><th colspan="2"><a href="news.html">see more...</a></th></tfoot>
+            </table>
+        <footer>
+            <nav>
+                <a href = "history.html">History</a>|
+                <a href = "depart.html">Departments</a>|
+                <a href = "map.html">Site map</a>|
+                <a href = "admis.html">Admissions Information</a>|
+                <a href = "privacy.html">Privacy and Security Policy</a>|
+                <a href = "download.html">Sources Download</a><br>
+            </nav>
+            <label for="disk_c">Viewers:</label><meter id="disk_c" value="6" min="0" max="10">6 out of 10</meter>7942<br>
+            Copyright &copy; National Chung Hsing University<br>
+            145 Xingda Rd., South Dist., Taichung City 402, Taiwan (R.O.C.)<br>
+            Tel : 04-22873181 <strong><a href="mailto: twjmy@msn.com">Contact author</a></strong><br>
+            Final update: <time>2020-10-28</time>
+        </footer>
+    </body>
+</html>

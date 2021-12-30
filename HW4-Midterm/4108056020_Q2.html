@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf8">
+<title>動態網頁程式設計期中考試作業_4108056020_談維傑</title>
+<script>
+var e, form, table, tr, td,
+	list = ["姓名", "性別", "生日", "手機", "信箱"];
+/*
+text color,
+background color,
+border color,
+border width,
+border style
+*/
+function style1(){
+	table.style.color = "red";
+	table.style.backgroundColor = "blue";
+	table.style.borderColor = "green";
+	table.style.borderWidth = "2px";
+	table.style.borderStyle = "double";
+}
+function style2(){
+	table.style.color = "blue";
+	table.style.backgroundColor = "red";
+	table.style.borderColor = "yellow";
+	table.style.borderWidth = "1px";
+	table.style.borderStyle = "double";
+}
+function build(){
+	var end = false;
+	for(let i = 1; i <= 3; i++){
+		if(!document.getElementById(list[0]+i).value){
+			alert("第"+i+"個人的姓名為必填項目");
+			end = true;
+		}
+	}
+	if(end) return;
+	table = document.createElement("table");
+	table.setAttribute("border","1");
+	table.setAttribute("cellpadding","10");
+	e = document.createElement("thead");
+	tr = document.createElement("tr");
+	for(let i = 0; i < list.length; i++){
+		td = document.createElement("th");
+		td.innerHTML = list[i];
+		tr.appendChild(td);
+	}
+	e.appendChild(tr);
+	table.appendChild(e);
+	e = document.createElement("tbody");
+	for(let i = 1; i <= 3; i++){
+		tr = document.createElement("tr");
+		td = document.createElement("td");
+		td.innerHTML = document.getElementById(list[0]+i).value;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.setAttribute("id", "tsex"+i);
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = document.getElementById(list[2]+i).value;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = document.getElementById(list[3]+i).value;
+		tr.appendChild(td);
+		td = document.createElement("td");
+		td.innerHTML = document.getElementById(list[4]+i).value;
+		tr.appendChild(td);
+		e.appendChild(tr);
+	}
+	table.appendChild(e);
+	e = document.createElement("tfoot");
+	table.appendChild(e);
+	var s1 = form.sex1.value;
+	var s2 = form.sex2.value;
+	var s3 = form.sex3.value;
+	document.body.innerHTML = "<h1>人員資料調查問卷</h1>";
+	e = document.createElement("button");
+	e.innerHTML = "CSS風格1";
+	e.addEventListener("click", style1 ,false)
+	document.body.appendChild(e);
+	e = document.createElement("button");
+	e.innerHTML = "CSS風格2";
+	e.addEventListener("click", style2 ,false)
+	document.body.appendChild(e);
+	document.body.appendChild(table);
+	document.getElementById("tsex1").innerHTML = s1;
+	document.getElementById("tsex2").innerHTML = s2;
+	document.getElementById("tsex3").innerHTML = s3;
+	style1();
+}
+function setup(){
+	document.body.innerHTML = "<h1>人員資料調查問卷</h1>";
+	form = document.createElement("form");
+	document.body.appendChild(form);
+	for(let i = 1; i <= 3; i++){
+		e = document.createElement("h2");
+		e.innerHTML = "第" + i + "個人";
+		form.appendChild(e);
+		form.innerHTML += "<span>姓名:</span>";
+		e = document.createElement("input");
+		e.setAttribute("type", "text");
+		e.setAttribute("id", "姓名"+i);
+		form.appendChild(e);
+		form.innerHTML += "<br><span>性別:</span>";
+		e = document.createElement("input");
+		e.setAttribute("type", "radio");
+		e.setAttribute("name", "sex"+i);
+		e.setAttribute("id", "male"+i);
+		e.setAttribute("value", "男");
+		form.appendChild(e);
+		e = document.createElement("label");
+		e.setAttribute("for", "male"+i);
+		e.innerHTML = "男";
+		form.appendChild(e);
+		e = document.createElement("input");
+		e.setAttribute("type", "radio");
+		e.setAttribute("name", "sex"+i);
+		e.setAttribute("id", "female"+i);
+		e.setAttribute("value", "女");
+		form.appendChild(e);
+		e = document.createElement("label");
+		e.setAttribute("for", "female"+i);
+		e.innerHTML = "女";
+		form.appendChild(e);
+		form.innerHTML += "<br><span>生日:</span>";
+		e = document.createElement("input");
+		e.setAttribute("type", "date");
+		e.setAttribute("id", "生日"+i);
+		form.appendChild(e);
+		form.innerHTML += "<br><span>手機:</span>";
+		e = document.createElement("input");
+		e.setAttribute("type", "text");
+		e.setAttribute("id", "手機"+i);
+		e.setAttribute("name", "phone"+i);
+		form.appendChild(e);
+		form.innerHTML += "<br><span>信箱:</span>";
+		e = document.createElement("input");
+		e.setAttribute("type", "text");
+		e.setAttribute("id", "信箱"+i);
+		e.setAttribute("name", "email"+i);
+		form.appendChild(e);
+	}
+	e = document.createElement("button");
+	e.innerHTML = "生成表格";
+	e.addEventListener("click", build ,false)
+	document.body.appendChild(e);
+}
+window.addEventListener("load", setup, false);
+</script>
+</head>
+<body></body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!--
+/***************************
+4108056020 談維傑 第六次作業12/2
+4108056020 TAN WEI CHIEH The 6th Homework 12/2
+***************************/
+-->
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title>Accounting System</title>
+		<style>
+			body{
+				font-family: 'Open Sans', '微軟正黑體', sans-serif;
+				background-color: darkslategray;
+				color:white;
+			}
+			h1{
+				font-size:xx-large;
+				color:goldenrod;
+			}
+			h2{
+				font-size:x-large;
+			}
+			input {
+				width: 101%; 
+				box-sizing: border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing: border-box;
+			}
+		</style>
+		<script>
+			var companyTable, addCompanyTextTR;
+			var companyName, companyAssets, companyLiabilities, companyRevenue, companyExpenses;
+			var recordTable, addRecordTextTR, recordDIV;
+			var sessionCompanies, sessionRecords;
+			var addCompanyTextList = ["company name","initial assets","initial liabilities"];
+			var addRecordTextList = ["name","object","type","price/salary","number"];
+			var saveButton = null;
+			function ad0(num){
+				return (num<10)?('0'+num):(num);
+			}
+			function deleteRecord(button){
+				let recordRow = button.parentElement.parentElement.parentElement;
+				window.sessionStorage.removeItem(recordRow.cells[0].innerHTML);
+				recordRow.parentElement.removeChild(recordRow);
+
+				delete sessionRecords[recordRow.cells[0].innerHTML];
+				
+				window.sessionStorage.setItem("companies",JSON.stringify(sessionCompanies));
+				window.sessionStorage.setItem("records",JSON.stringify(sessionRecords));
+
+				if(!saveButton){
+					saveButton = document.createElement("button");
+					saveButton.innerHTML = "Save";
+					saveButton.addEventListener("click", save, false);
+					addCompanyTextTR.lastElementChild.appendChild(saveButton);
+				}
+			}
+			function newRecordCtrlCol(){
+				let recordCtrlCol = document.createElement("div");
+				button = document.createElement("button");
+				button.innerHTML = "Delete";
+				button.setAttribute("onclick", "deleteRecord(this)");
+				recordCtrlCol.appendChild(button);
+				return recordCtrlCol;
+			}
+			function addRecordText(){
+				let x = addRecordTextTR.cells[1].lastElementChild;
+				let recordProperty = {};
+				let tHead = recordTable.tHead;
+				recordTable.removeChild(recordTable.tHead);
+				recordTable.removeChild(recordTable.tFoot);
+				let row = recordTable.insertRow(-1);
+				var d = new Date();
+				ymdhms = ad0(d.getFullYear())+'-'+ad0(d.getMonth() + 1)+'-'+ad0(d.getDate())+
+					' '+ad0(d.getHours())+':'+ad0(d.getMinutes())+':'+ad0(d.getSeconds());
+				row.insertCell(0).innerHTML = ymdhms;
+
+				for(var i = 1; i < addRecordTextTR.cells.length-1; i++){
+					let x = addRecordTextTR.cells[i].lastElementChild;
+					row.insertCell(i).innerHTML = x.value;
+					recordProperty[addRecordTextList[i]] = x.value;
+					x.value = null;
+				}
+				
+				row.insertCell(6).appendChild(newRecordCtrlCol());
+
+				sessionRecords[companyName][ymdhms] = recordProperty;
+
+				let g = parseInt(recordProperty["price/salary"]);
+
+				if(recordProperty["type"] == "receivable"){
+					sessionCompanies[companyName]["assets"] = 
+						parseInt(sessionCompanies[companyName]["assets"]) + g
+					companyAssets.innerHTML = sessionCompanies[companyName]["assets"];
+					sessionCompanies[companyName]["revenue"] = 
+						parseInt(sessionCompanies[companyName]["revenue"]) + g
+					companyRevenue.innerHTML = sessionCompanies[companyName]["revenue"];
+				}
+				else if(recordProperty["type"] == "payable"){
+					sessionCompanies[companyName]["assets"] = 
+						parseInt(sessionCompanies[companyName]["assets"]) - g
+					companyAssets.innerHTML = sessionCompanies[companyName]["assets"];
+					sessionCompanies[companyName]["liabilities"] = 
+						parseInt(sessionCompanies[companyName]["liabilities"]) + g
+					companyLiabilities.innerHTML = sessionCompanies[companyName]["liabilities"];
+					sessionCompanies[companyName]["expenses"] = 
+						parseInt(sessionCompanies[companyName]["expenses"]) + g
+					companyExpenses.innerHTML = sessionCompanies[companyName]["expenses"];
+				}
+				
+				window.sessionStorage.setItem("companies",JSON.stringify(sessionCompanies));
+				window.sessionStorage.setItem("records",JSON.stringify(sessionRecords));
+
+				recordTable.appendChild(tHead);
+				recordTable.createTFoot();
+				recordTable.tFoot.appendChild(addRecordTextTR);
+				if(!saveButton){
+					saveButton = document.createElement("button");
+					saveButton.innerHTML = "Save";
+					saveButton.addEventListener("click", save, false);
+					addCompanyTextTR.lastElementChild.appendChild(saveButton);
+				}
+			}
+			function viewRecord(button){
+				while(recordDIV.lastElementChild)
+					recordDIV.removeChild(recordDIV.lastElementChild);
+				companyName = button.parentElement
+					.parentElement.parentElement.cells[1].innerHTML;
+				companyAssets = button.parentElement
+					.parentElement.parentElement.cells[2];
+				companyLiabilities = button.parentElement
+					.parentElement.parentElement.cells[3];
+				companyRevenue = button.parentElement
+					.parentElement.parentElement.cells[4];
+				companyExpenses = button.parentElement
+					.parentElement.parentElement.cells[5];
+				
+				recordTable = document.createElement("table");
+				recordTable.setAttribute("style","width: 100%;");
+				recordTable.createTBody();
+				
+				let keys = Object.keys(sessionRecords[companyName]);
+				for(var i in keys){
+					i = keys[i];
+					let row = recordTable.insertRow(-1);
+					row.insertCell(0).innerHTML = i;
+					row.insertCell(1).innerHTML = sessionRecords[companyName][i]["name"];
+					row.insertCell(2).innerHTML = sessionRecords[companyName][i]["object"];
+					row.insertCell(3).innerHTML = sessionRecords[companyName][i]["type"];
+					row.insertCell(4).innerHTML = sessionRecords[companyName][i]["price/salary"];
+					row.insertCell(5).innerHTML = sessionRecords[companyName][i]["number"];
+					if(sessionRecords[companyName][i]["name"]!="initial")
+						row.insertCell(6).appendChild(newRecordCtrlCol());
+					else row.insertCell(6);
+				}
+
+				let th,tr;
+				recordDIV.setAttribute("style",
+					"text-align: center; width: 100%; max-width: 800px;"+
+					"margin: 0px auto; table-layout:fixed;"
+				);
+
+				let h2 = document.createElement("h2");
+				h2.innerHTML = "Records";
+				recordDIV.appendChild(h2);
+				let recThL = ["Record Date","Name","Object","Type","Price/Salary","Number","Operations"];
+				tr = document.createElement("tr");
+
+				for(let i = 0; i < recThL.length; i++){
+					th = document.createElement("th");
+					th.innerHTML = recThL[i];
+					tr.appendChild(th);
+				}
+				recordTable.createTHead();
+				recordTable.tHead.appendChild(tr);
+
+				recordTable.createTFoot();
+				recordTable.tFoot.appendChild(addRecordTextTR);
+				recordDIV.appendChild(recordTable);
+			}
+			function deleteCompany(button){
+				let companyRow = button.parentElement.parentElement.parentElement;
+				window.sessionStorage.removeItem(companyRow.cells[1].innerHTML);
+				companyRow.parentElement.removeChild(companyRow);
+
+				delete sessionCompanies[companyRow.cells[1].innerHTML];
+				delete sessionRecords[companyRow.cells[1].innerHTML];
+
+				window.sessionStorage.setItem("companies",JSON.stringify(sessionCompanies));
+				window.sessionStorage.setItem("records",JSON.stringify(sessionRecords));
+
+				if(!saveButton){
+					saveButton = document.createElement("button");
+					saveButton.innerHTML = "Save";
+					saveButton.addEventListener("click", save, false);
+					addCompanyTextTR.lastElementChild.appendChild(saveButton);
+				}
+			}
+			function newCompanyCtrlCol(){
+				let companyCtrlCol = document.createElement("div");
+				button = document.createElement("button");
+				button.innerHTML = "Delete";
+				button.setAttribute("onclick", "deleteCompany(this)");
+				companyCtrlCol.appendChild(button);
+				button = document.createElement("button");
+				button.innerHTML = "Record";
+				button.setAttribute("onclick", "viewRecord(this)");
+				companyCtrlCol.appendChild(button);
+				return companyCtrlCol;
+			}
+			function addCompanyText(){
+				let x = addCompanyTextTR.cells[1].lastElementChild;
+				if(!sessionStorage[x.value]!=undefined){
+					let companyProperty = {};
+					let tHead = companyTable.tHead;
+					companyTable.removeChild(companyTable.tHead);
+					companyTable.removeChild(companyTable.tFoot);
+					let row = companyTable.insertRow(-1);
+					var d = new Date();
+					ymdhms = ad0(d.getFullYear())+'-'+ad0(d.getMonth() + 1)+'-'+ad0(d.getDate())+
+						' '+ad0(d.getHours())+':'+ad0(d.getMinutes())+':'+ad0(d.getSeconds());
+					row.insertCell(0).innerHTML = ymdhms;
+					companyProperty["record date"] = ymdhms;
+
+					let name = row.insertCell(1);
+					name.innerHTML = x.value;
+					x.value = null;
+					for(let i = 1; i < addCompanyTextList.length; i++){
+						x = addCompanyTextTR.cells[i+1].lastElementChild;
+						if(i == 1) {
+							let xx = addCompanyTextTR.cells[i+2].lastElementChild;
+							companyProperty[addCompanyTextList[i]] = parseInt(x.value)-parseInt(xx.value);
+							row.insertCell(i+1).innerHTML = parseInt(x.value)-parseInt(xx.value);
+						}
+						else {
+							companyProperty[addCompanyTextList[i]] = x.value;
+							row.insertCell(i+1).innerHTML = x.value;
+						}
+						x.value = null;
+					}
+
+					companyProperty["liabilities"] = companyProperty["initial liabilities"];
+					companyProperty["assets"] = parseInt(companyProperty["initial assets"])-parseInt(companyProperty["initial liabilities"]);
+					companyProperty["revenue"] = companyProperty["initial assets"];
+					companyProperty["expenses"] = companyProperty["initial liabilities"];
+
+					row.insertCell(4).innerHTML = companyProperty["initial assets"];
+					row.insertCell(5).innerHTML = companyProperty["initial liabilities"];
+					row.insertCell(6).appendChild(newCompanyCtrlCol());
+
+					let recordProperty = {};
+					recordProperty[ymdhms] = {
+						"name":"initial",
+						"object":"initial",
+						"type":"initial",
+						"price/salary":companyProperty["assets"],
+						"number":"-"
+					}
+					sessionRecords[name.innerHTML] = recordProperty;
+					sessionCompanies[name.innerHTML] = companyProperty;
+					companyTable.appendChild(tHead);
+					companyTable.createTFoot();
+					companyTable.tFoot.appendChild(addCompanyTextTR);
+					
+					window.sessionStorage.setItem("companies",JSON.stringify(sessionCompanies));
+					window.sessionStorage.setItem("records",JSON.stringify(sessionRecords));
+
+					if(!saveButton){
+						saveButton = document.createElement("button");
+						saveButton.innerHTML = "Save";
+						saveButton.addEventListener("click", save, false);
+						addCompanyTextTR.lastElementChild.appendChild(saveButton);
+					}
+				}
+				else alert("You've added a same company!!");
+			}
+			function save(){
+				console.log(sessionCompanies);
+				console.log(sessionRecords);
+				window.sessionStorage.setItem("companies",JSON.stringify(sessionCompanies));
+				window.sessionStorage.setItem("records",JSON.stringify(sessionRecords));
+				window.localStorage.setItem("companies",window.sessionStorage.getItem("companies"));
+				window.localStorage.setItem("records",window.sessionStorage.getItem("records"));
+				addCompanyTextTR.lastElementChild.removeChild(saveButton);
+				saveButton = null;
+			}
+			function setup(){
+				console.log(window.localStorage.getItem("companies"));
+				console.log(window.localStorage.getItem("records"));
+				//window.localStorage.clear();
+
+				//hided record board addition control
+				addRecordTextTR = document.createElement("tr");
+				th = document.createElement("th");
+				th.innerHTML = "Add New Record";
+				addRecordTextTR.appendChild(th);
+				for(let i = 0; i < addRecordTextList.length; i++){
+					th = document.createElement("th");
+					let input = document.createElement("input");
+					if(i==0) input.setAttribute("type","text");
+					else if(i==1){
+						input = document.createElement("SELECT");
+						let option = document.createElement("option");
+						option.setAttribute("value","product");
+						option.innerHTML = "product";
+						input.appendChild(option);
+						option = document.createElement("option");
+						option.setAttribute("value","employee");
+						option.innerHTML = "employee";
+						input.appendChild(option);
+						option = document.createElement("option");
+						option.setAttribute("value","material(s)");
+						option.innerHTML = "material(s)";
+						input.appendChild(option);
+					}
+					else if(i==2){
+						input = document.createElement("SELECT");
+						let option = document.createElement("option");
+						option.setAttribute("value","receivable");
+						option.innerHTML = "receivable";
+						input.appendChild(option);
+						option = document.createElement("option");
+						option.setAttribute("value","payable");
+						option.innerHTML = "payable";
+						input.appendChild(option);
+					}
+					else{
+						input.setAttribute("type","number");
+						input.setAttribute("min","0");
+					}
+					input.setAttribute("id",addRecordTextList[i]);
+					input.setAttribute("placeholder","Enter "+addRecordTextList[i]+"...");
+					th.appendChild(input);
+					addRecordTextTR.appendChild(th);
+				}
+				th = document.createElement("th");
+				button = document.createElement("button");
+				button.innerHTML = "Add Record";
+				button.addEventListener("click", addRecordText, false);
+				th.appendChild(button);
+				addRecordTextTR.appendChild(th);
+
+				//UI
+				div = document.createElement("div");
+				div.setAttribute("style",
+					"text-align: center; width: 100%; max-width: 800px;"+
+					"margin: 0px auto; table-layout:fixed;"
+				);
+				let h1 = document.createElement("h1");
+				h1.setAttribute("style","text-align: center;");
+				h1.innerHTML = "Accounting Information System";
+				div.appendChild(h1);
+
+				h2 = document.createElement("h2");
+				h2.innerHTML = "Companies";
+				div.appendChild(h2);
+
+				companyTable = document.createElement("table");
+				companyTable.setAttribute("style","width: 100%;");
+				companyTable.createTBody();
+
+				sessionCompanies = JSON.parse(window.localStorage.getItem("companies"));
+				sessionRecords = JSON.parse(window.localStorage.getItem("records"));
+				if(!sessionCompanies) sessionCompanies = {};
+				else{
+					let keys = Object.keys(sessionCompanies);
+					if(keys.length>0) for(var i in keys){
+						i = keys[i];
+						let row = companyTable.insertRow(-1);
+						row.insertCell(0).innerHTML = sessionCompanies[i]["record date"];
+						row.insertCell(1).innerHTML = i;
+						row.insertCell(2).innerHTML = sessionCompanies[i]["assets"];
+						row.insertCell(3).innerHTML = sessionCompanies[i]["liabilities"];
+						row.insertCell(4).innerHTML = sessionCompanies[i]["revenue"];
+						row.insertCell(5).innerHTML = sessionCompanies[i]["expenses"];
+						row.insertCell(6).appendChild(newCompanyCtrlCol());
+					}
+				}
+				if(!sessionRecords) sessionRecords = {};
+
+				let companyThL = ["Record Date","Company Name","Current Assets","Liabilities","Revenue","Expenses","Operations"];
+				tr = document.createElement("tr");
+				for(let i = 0; i < companyThL.length; i++){
+					th = document.createElement("th");
+					th.innerHTML = companyThL[i];
+					tr.appendChild(th);
+				}
+				companyTable.createTHead();
+				companyTable.tHead.appendChild(tr);
+
+				addCompanyTextTR = document.createElement("tr");
+				th = document.createElement("th");
+				th.innerHTML = "Add New Company";
+				addCompanyTextTR.appendChild(th);
+				for(let i = 0; i < addCompanyTextList.length; i++){
+					th = document.createElement("th");
+					let input = document.createElement("input");
+					if(i==0) input.setAttribute("type","text");
+					else{
+						input.setAttribute("type","number");
+						input.setAttribute("min","0");
+					}
+					input.setAttribute("id",addCompanyTextList[i]);
+					input.setAttribute("placeholder","Enter "+addCompanyTextList[i]+"...");
+					th.appendChild(input);
+					addCompanyTextTR.appendChild(th);
+				}
+				for(let i = 0; i < 2; i++){
+					th = document.createElement("th");
+					addCompanyTextTR.appendChild(th);
+				}
+				th = document.createElement("th");
+				button = document.createElement("button");
+				button.innerHTML = "Add Company";
+				button.addEventListener("click", addCompanyText, false);
+				th.appendChild(button);
+				addCompanyTextTR.appendChild(th);
+				companyTable.createTFoot();
+				companyTable.tFoot.appendChild(addCompanyTextTR);
+				div.appendChild(companyTable);
+				document.body.appendChild(div);
+
+				recordDIV = document.createElement("div");
+				document.body.appendChild(recordDIV);
+			}
+			window.addEventListener("load", setup, false);
+		</script>
+	</head>
+	<body></body>
+</html>

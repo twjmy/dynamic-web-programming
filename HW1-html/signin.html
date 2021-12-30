@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        /***************************
+        4108056020 談維傑 第一次作業 9/30
+        4108056020 Tan Wei-Chieh The First Homework 9/30
+        ***************************/
+        <meta charset = "utf-8">
+        <title>登入 - 國立中興大學</title>
+    </head>
+    <body>
+        <h1><a href = "index.html"><img src = "logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/></a>國立中興大學 - 登入</h1>
+        <a href = "en/signin.html">English</a>
+        <hr>
+        <form action = "index.html" method="POST" automcomplete = "off">
+            <label for="name">帳號:</label>
+            <input required autofocus type="text" maxlength="10" pattern="\d{1,10}" id="uid" name="uid" placeholder="輸入10位數字帳號..."><br><br>
+            <label for="name">密碼:</label>
+            <input required type="password" size='20' id="psw" name="psw" placeholder="輸入密碼..."><br><br>
+            <input type="radio" id="student" name="identity" value="student" checked="checked">
+            <label for="male">學生</label>
+            <input type="radio" id="stuff" name="identity" value="stuff">
+            <label for="female">教職員</label><br>
+            <input type="checkbox" id="keep" name="keep" value="keep">
+            <label for="keep">保持登入</label>
+            <input type="hidden" name="language" value="ch">
+            <input type="submit" value="登入">  <a href="signup.html">註冊</a>
+        </form>
+        <aside><a href = "index.html">回主畫面</a></aside>
+    </body>
+</html>

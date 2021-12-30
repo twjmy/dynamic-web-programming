@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        /***************************
+        4108056020 談維傑 第一次作業 9/30
+        4108056020 Tan Wei-Chieh The First Homework 9/30
+        ***************************/
+        <meta charset = "utf-8">
+        <title>登入 - National Chung Hsing University</title>
+    </head>
+    <body>
+        <h1><a href = "index.html"><img src = "../logo.nchu.png" width = "55" height =  "55" alt = "NCHU_Logo"/></a>National Chung Hsing University - Sign In</h1>
+        <a href = "../signin.html">中文</a>
+        <hr>
+        <form action = "index.html" method="POST" automcomplete = "off">
+            <label for="name">User ID: </label>
+            <input required autofocus type="text" maxlength="10" pattern="\d{1,10}" id="uid" name="uid" placeholder="Enter 10-number user id..."><br><br>
+            <label for="name">Passward:</label>
+            <input required type="password" size="19" id="psw" name="psw" placeholder="Enter password..."><br><br>
+            <input type="radio" id="student" name="identity" value="student" checked="checked">
+            <label for="male">Student</label>
+            <input type="radio" id="stuff" name="identity" value="stuff">
+            <label for="female">Stuff</label><br>
+            <input type="checkbox" id="keep" name="keep" value="keep">
+            <label for="keep">Keep me sign in</label>
+            <input type="hidden" name="language" value="en">
+            <input type="submit" value="Sign in">  <a href="signup.html">Sign Up</a>
+        </form>
+        <aside><a href = "index.html">Back to main menu</a></aside>
+    </body>
+</html>
